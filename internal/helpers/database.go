@@ -2,50 +2,61 @@ package helpers
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 
 	_ "modernc.org/sqlite"
 )
 
-func InitDB() *sql.DB {
+// ConnectDB initialise la base de données SQLite
+func InitDB() (*sql.DB, error) {
 	db, err := sql.Open("sqlite", "collections.db")
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	createTableSQL := `
+	// Création des tables si elles n'existent pas
+	err = createTables(db)
+	if err != nil {
+		return nil, err
+	}
+
+	return db, nil
+}
+
+// createTables crée les tables nécessaires
+func createTables(db *sql.DB) error {
+	query := `
+	CREATE TABLE IF NOT EXISTS events (
+		id TEXT PRIMARY KEY,
+		title TEXT NOT NULL,
+		start_time DATETIME NOT NULL,
+		end_time DATETIME NOT NULL,
+		location TEXT NOT NULL,
+		resource_id TEXT NOT NULL,
+		FOREIGN KEY(resource_id) REFERENCES resources(id)
+	);
+
 	CREATE TABLE IF NOT EXISTS resources (
 		id TEXT PRIMARY KEY,
 		name TEXT NOT NULL,
-		url TEXT NOT NULL
-	);`
-	_, err = db.Exec(createTableSQL)
+	    url TEXT NOT NULL
+	);
+
+	CREATE TABLE IF NOT EXISTS alerts (
+		id TEXT PRIMARY KEY,
+		recipient TEXT NOT NULL,
+		resource_id TEXT NOT NULL,
+		alert_type TEXT NOT NULL,
+		FOREIGN KEY(resource_id) REFERENCES resources(id)
+	);
+	`
+	_, err := db.Exec(query)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Erreur lors de la création des tables : %v", err)
+		return err
 	}
 
-	// Insérer des données de test
-	insertTestData(db)
-
-	return db
-}
-
-func insertTestData(db *sql.DB) {
-	testData := []struct {
-		id   string
-		name string
-		url  string
-	}{
-		{"1", "Cours Informatique", "https://example.com/informatique"},
-		{"2", "Mathématiques Avancées", "https://example.com/maths"},
-		{"3", "Physique Quantique", "https://example.com/physique"},
-	}
-
-	for _, data := range testData {
-		_, err := db.Exec("INSERT OR IGNORE INTO resources (id, name, url) VALUES (?, ?, ?)", data.id, data.name, data.url)
-		if err != nil {
-			log.Printf("Erreur lors de l'insertion : %v\n", err)
-		}
-	}
-	log.Println("✅ Données de test insérées avec succès !")
+	fmt.Println("✅ Base de données et tables créées avec succès !")
+	return nil
 }

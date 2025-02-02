@@ -6,7 +6,7 @@ import (
 )
 
 type Event struct {
-	ID         uuid.UUID `json:"id" db:"id"`
+	ID         string    `json:"id" db:"id"`
 	Title      string    `json:"title" db:"title"`
 	StartTime  time.Time `json:"start_time" db:"start_time"`
 	EndTime    time.Time `json:"end_time" db:"end_time"`
