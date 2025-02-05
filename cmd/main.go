@@ -6,6 +6,7 @@ import (
 	"bss.com/create_api_config/internal/ripositories"
 	"bss.com/create_api_config/internal/services"
 	"log"
+
 	"net/http"
 )
 
@@ -24,6 +25,10 @@ func main() {
 	eventService := &services.EventService{Repo: eventRepo}
 	eventController := &controllers.EventController{Service: eventService}
 
+	// Initialisation des composants pour Alert
+	alertRepo := &ripositories.AlertRepository{DB: db}
+	alertService := &services.AlertService{Repo: alertRepo}
+	alertController := &controllers.AlertController{Service: alertService}
 	// Routes pour Resource
 	http.HandleFunc("/resources", resourceController.GetAll)
 	http.HandleFunc("/resources/create", resourceController.Create)
@@ -37,6 +42,12 @@ func main() {
 	http.HandleFunc("/events/get", eventController.GetEventByID)
 	http.HandleFunc("/events/update", eventController.UpdateEvent)
 	http.HandleFunc("/events/delete", eventController.DeleteEvent)
+	// Routes pour Alert
+	http.HandleFunc("/alerts", alertController.GetAllAlerts)
+	http.HandleFunc("/alerts/create", alertController.CreateAlert)
+	http.HandleFunc("/alerts/get", alertController.GetAlertByID)
+	http.HandleFunc("/alerts/update", alertController.UpdateAlert)
+	http.HandleFunc("/alerts/delete", alertController.DeleteAlert)
 
 	log.Println("🚀 Serveur démarré sur http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
