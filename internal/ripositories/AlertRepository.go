@@ -15,7 +15,7 @@ func NewAlertRepository(db *sql.DB) *AlertRepository {
 
 // Récupérer tous les événements
 func (r *AlertRepository) GetAllAlerts() ([]models.Alert, error) {
-	rows, err := r.DB.Query("SELECT id, recipient, resource_id, alert_type FROM alerts")
+	rows, err := r.DB.Query("SELECT id, email, resource_id, oll FROM alerts")
 	if err != nil {
 		return nil, err
 	}
@@ -24,7 +24,7 @@ func (r *AlertRepository) GetAllAlerts() ([]models.Alert, error) {
 	var alerts []models.Alert
 	for rows.Next() {
 		var alert models.Alert
-		if err := rows.Scan(&alert.ID, &alert.Recipients, &alert.ResourceID, &alert.AlertType); err != nil {
+		if err := rows.Scan(&alert.ID, &alert.Email, &alert.ResourceID, &alert.Oll); err != nil {
 			return nil, err
 		}
 		alerts = append(alerts, alert)
@@ -36,8 +36,8 @@ func (r *AlertRepository) GetAllAlerts() ([]models.Alert, error) {
 // Récupérer un événement par ID
 func (r *AlertRepository) GetAlertByID(id string) (*models.Alert, error) {
 	var alert models.Alert
-	err := r.DB.QueryRow("SELECT id, recipient, resource_id, alert_type FROM alerts WHERE id = ?", id).
-		Scan(&alert.ID, &alert.Recipients, &alert.ResourceID, &alert.AlertType)
+	err := r.DB.QueryRow("SELECT id, email, resource_id, oll FROM alerts WHERE id = ?", id).
+		Scan(&alert.ID, &alert.Email, &alert.ResourceID, &alert.Oll)
 
 	if err != nil {
 		return nil, err
@@ -47,15 +47,15 @@ func (r *AlertRepository) GetAlertByID(id string) (*models.Alert, error) {
 
 // Créer un nouvel événement
 func (r *AlertRepository) CreateAlert(alert *models.Alert) error {
-	_, err := r.DB.Exec("INSERT INTO alerts (id, recipient, resource_id, alert_type) VALUES (?, ?, ?, ?)",
-		alert.ID, alert.Recipients, alert.ResourceID, alert.AlertType)
+	_, err := r.DB.Exec("INSERT INTO alerts (id, email, resource_id, oll) VALUES (?, ?, ?, ?)",
+		alert.ID, alert.Email, alert.ResourceID, alert.Oll)
 	return err
 }
 
 // Mettre à jour un événement
 func (r *AlertRepository) UpdateAlert(alert *models.Alert) error {
-	_, err := r.DB.Exec("UPDATE alerts SET recipient = ? , resource_id = ?,alert_type = ? WHERE id = ?",
-		alert.Recipients, alert.ResourceID, alert.AlertType, alert.ID)
+	_, err := r.DB.Exec("UPDATE alerts SET email = ? , resource_id = ?,oll = ? WHERE id = ?",
+		alert.Email, alert.ResourceID, alert.Oll, alert.ID)
 	return err
 }
 
