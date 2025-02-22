@@ -28,9 +28,9 @@ func InitDB() (*sql.DB, error) {
 func createTables(db *sql.DB) error {
 	query := `
 	CREATE TABLE IF NOT EXISTS resources (
-		id TEXT PRIMARY KEY,
+		id TEXT PRIMARY KEY ,
 		name TEXT NOT NULL,
-	    uid integer NOT NULL
+	    uca_id integer NOT NULL
 	);
 
 	CREATE TABLE IF NOT EXISTS alerts (

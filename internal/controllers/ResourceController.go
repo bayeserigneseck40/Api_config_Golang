@@ -15,15 +15,15 @@ type ResourceController struct {
 // Création d'une ressource
 func (c *ResourceController) Create(w http.ResponseWriter, r *http.Request) {
 	var req struct {
-		Name string `json:"name"`
-		Uid  int    `json:"uid"`
+		Name  string `json:"name"`
+		Ucaid int    `json:"uca_id"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "Invalid input", http.StatusBadRequest)
 		return
 	}
 
-	resource, err := c.Service.CreateResource(req.Name, req.Uid)
+	resource, err := c.Service.CreateResource(req.Name, req.Ucaid)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -59,15 +59,15 @@ func (c *ResourceController) Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var req struct {
-		Name string `json:"name"`
-		Uid  int    `json:"uid"`
+		Name  string `json:"name"`
+		Ucaid int    `json:"uca_id"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "Invalid input", http.StatusBadRequest)
 		return
 	}
 
-	err = c.Service.UpdateResource(id, req.Name, req.Uid)
+	err = c.Service.UpdateResource(id, req.Name, req.Ucaid)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

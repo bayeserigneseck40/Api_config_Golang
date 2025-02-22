@@ -33,15 +33,15 @@ func main() {
 	// Routes pour Resource
 	http.HandleFunc("/resources", resourceController.GetAll)
 	http.HandleFunc("/resources/create", resourceController.Create)
-	http.HandleFunc("/resources/{id}", resourceController.GetByID)
+	http.HandleFunc("/resources/get", resourceController.GetByID)
 	http.HandleFunc("/resources/update", resourceController.Update)
 	http.HandleFunc("/resources/delete", resourceController.Delete)
 
 	// Routes pour Alert
-	http.HandleFunc("/alerts", alertController.GetAllAlerts)
-	http.HandleFunc("/alerts/create", alertController.CreateAlert)
-	http.HandleFunc("/alerts/{delete}", alertController.DeleteAlert)
-	http.HandleFunc("/alerts/update", alertController.UpdateAlert)
+	http.HandleFunc("/alerts", alertController.GetAll)
+	http.HandleFunc("/alerts/create", alertController.Create)
+	//http.HandleFunc("/alerts/{delete}", alertController.DeleteAlert)
+	//http.HandleFunc("/alerts/update", alertController.UpdateAlert)
 	log.Println("🚀 Serveur démarré sur http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
