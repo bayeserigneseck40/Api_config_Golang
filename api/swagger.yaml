@@ -1,0 +1,55 @@
+basePath: /
+info:
+  contact:
+    email: Baye_Serigne.SECK@etu.uca.fr
+    name: Baye serigne Seck.
+  description: API to manage resource and alert.
+  title: middleware/project
+  version: 1.0.0
+paths:
+  /resources:
+    get:
+      consumes:
+      - application/json
+      description: Retourne une ressource spécifique en fonction de son ID
+      parameters:
+      - description: ID de la ressource
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "400":
+          description: Invalid ID
+          schema:
+            type: string
+        "404":
+          description: Resource not found
+          schema:
+            type: string
+      summary: Récupère une ressource par ID
+      tags:
+      - Ressources
+    post:
+      consumes:
+      - application/json
+      description: Crée une nouvelle ressource avec un nom et un identifiant UCA
+      produces:
+      - application/json
+      responses:
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Crée une ressource
+      tags:
+      - Ressources
+schemes:
+- http
+swagger: "2.0"

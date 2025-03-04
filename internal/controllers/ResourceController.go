@@ -12,7 +12,14 @@ type ResourceController struct {
 	Service *services.ResourceService
 }
 
-// Création d'une ressource
+// @Summary Crée une ressource
+// @Description Crée une nouvelle ressource avec un nom et un identifiant UCA
+// @Tags Ressources
+// @Accept json
+// @Produce json
+// @Failure 400 {string} string "Invalid input"
+// @Failure 500 {string} string "Internal server error"
+// @Router /resources [post]
 func (c *ResourceController) Create(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Name  string `json:"name"`
@@ -33,7 +40,15 @@ func (c *ResourceController) Create(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(resource)
 }
 
-// Récupération d'une ressource
+// @Summary Récupère une ressource par ID
+// @Description Retourne une ressource spécifique en fonction de son ID
+// @Tags Ressources
+// @Accept json
+// @Produce json
+// @Param id query string true "ID de la ressource"
+// @Failure 400 {string} string "Invalid ID"
+// @Failure 404 {string} string "Resource not found"
+// @Router /resources [get]
 func (c *ResourceController) GetByID(w http.ResponseWriter, r *http.Request) {
 	id, err := uuid.Parse(r.URL.Query().Get("id"))
 	if err != nil {

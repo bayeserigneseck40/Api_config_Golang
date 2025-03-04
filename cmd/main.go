@@ -18,7 +18,6 @@ func main() {
 	// Initialisation de la base de données
 	db, _ := helpers.InitDB()
 	defer db.Close()
-
 	// Définition du routeur
 	//router := mux.NewRouter()
 	// Initialisation des composants pour Resource
