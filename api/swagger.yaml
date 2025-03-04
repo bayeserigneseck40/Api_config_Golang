@@ -11,25 +11,15 @@ paths:
     get:
       consumes:
       - application/json
-      description: Retourne une ressource spécifique en fonction de son ID
-      parameters:
-      - description: ID de la ressource
-        in: query
-        name: id
-        required: true
-        type: string
+      description: Récupère la liste de toutes les ressources disponibles
       produces:
       - application/json
       responses:
-        "400":
-          description: Invalid ID
+        "500":
+          description: Internal server error
           schema:
             type: string
-        "404":
-          description: Resource not found
-          schema:
-            type: string
-      summary: Récupère une ressource par ID
+      summary: Liste toutes les ressources
       tags:
       - Ressources
     post:
@@ -48,6 +38,63 @@ paths:
           schema:
             type: string
       summary: Crée une ressource
+      tags:
+      - Ressources
+  /resources/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Supprime une ressource via son ID
+      parameters:
+      - description: ID de la ressource
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Resource deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid ID
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Supprime une ressource
+      tags:
+      - Ressources
+    put:
+      consumes:
+      - application/json
+      description: Met à jour une ressource via son ID
+      parameters:
+      - description: ID de la ressource
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Resource updated successfully
+          schema:
+            type: string
+        "400":
+          description: Invalid input
+          schema:
+            type: string
+        "500":
+          description: Internal server error
+          schema:
+            type: string
+      summary: Met à jour une ressource
       tags:
       - Ressources
 schemes:

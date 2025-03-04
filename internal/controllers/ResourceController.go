@@ -65,7 +65,17 @@ func (c *ResourceController) GetByID(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(resource)
 }
 
-// Mise à jour d'une ressource
+// Update met à jour une ressource existante
+// @Summary Met à jour une ressource
+// @Description Met à jour une ressource via son ID
+// @Tags Ressources
+// @Accept json
+// @Produce json
+// @Param id query string true "ID de la ressource"
+// @Success 200 {string} string "Resource updated successfully"
+// @Failure 400 {string} string "Invalid input"
+// @Failure 500 {string} string "Internal server error"
+// @Router /resources/{id} [put]
 func (c *ResourceController) Update(w http.ResponseWriter, r *http.Request) {
 	id, err := uuid.Parse(r.URL.Query().Get("id"))
 	if err != nil {
@@ -91,7 +101,17 @@ func (c *ResourceController) Update(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-// Suppression d'une ressource
+// Delete supprime une ressource
+// @Summary Supprime une ressource
+// @Description Supprime une ressource via son ID
+// @Tags Ressources
+// @Accept json
+// @Produce json
+// @Param id query string true "ID de la ressource"
+// @Success 204 {string} string "Resource deleted successfully"
+// @Failure 400 {string} string "Invalid ID"
+// @Failure 500 {string} string "Internal server error"
+// @Router /resources/{id} [delete]
 func (c *ResourceController) Delete(w http.ResponseWriter, r *http.Request) {
 	id, err := uuid.Parse(r.URL.Query().Get("id"))
 	if err != nil {
@@ -108,7 +128,14 @@ func (c *ResourceController) Delete(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
-// Récupération de toutes les ressources
+// GetAll récupère toutes les ressources
+// @Summary Liste toutes les ressources
+// @Description Récupère la liste de toutes les ressources disponibles
+// @Tags Ressources
+// @Accept json
+// @Produce json
+// @Failure 500 {string} string "Internal server error"
+// @Router /resources [get]
 func (c *ResourceController) GetAll(w http.ResponseWriter, r *http.Request) {
 	resources, err := c.Service.GetAllResources()
 	if err != nil {
