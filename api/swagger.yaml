@@ -7,6 +7,39 @@ info:
   title: middleware/project
   version: 1.0.0
 paths:
+  /alerts:
+    get:
+      consumes:
+      - application/json
+      description: Récupère toutes les alertes enregistrées
+      produces:
+      - application/json
+      responses:
+        "500":
+          description: Erreur lors de la récupération des alertes
+          schema:
+            type: string
+      summary: Liste toutes les alertes
+      tags:
+      - Alertes
+    post:
+      consumes:
+      - application/json
+      description: Crée une nouvelle alerte associée à une ressource
+      produces:
+      - application/json
+      responses:
+        "400":
+          description: Données invalides
+          schema:
+            type: string
+        "500":
+          description: Impossible de créer l'alerte
+          schema:
+            type: string
+      summary: Crée une alerte
+      tags:
+      - Alertes
   /resources:
     get:
       consumes:

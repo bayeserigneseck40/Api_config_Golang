@@ -18,6 +18,56 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/alerts": {
+            "get": {
+                "description": "Récupère toutes les alertes enregistrées",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Alertes"
+                ],
+                "summary": "Liste toutes les alertes",
+                "responses": {
+                    "500": {
+                        "description": "Erreur lors de la récupération des alertes",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Crée une nouvelle alerte associée à une ressource",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Alertes"
+                ],
+                "summary": "Crée une alerte",
+                "responses": {
+                    "400": {
+                        "description": "Données invalides",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Impossible de créer l'alerte",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/resources": {
             "get": {
                 "description": "Récupère la liste de toutes les ressources disponibles",

@@ -11,7 +11,15 @@ type AlertController struct {
 	Service *services.AlertService
 }
 
-// Créer une alerte (POST /alerts/create)
+// Create crée une nouvelle alerte
+// @Summary Crée une alerte
+// @Description Crée une nouvelle alerte associée à une ressource
+// @Tags Alertes
+// @Accept json
+// @Produce json
+// @Failure 400 {string} string "Données invalides"
+// @Failure 500 {string} string "Impossible de créer l'alerte"
+// @Router /alerts [post]
 func (c *AlertController) Create(w http.ResponseWriter, r *http.Request) {
 	var input struct {
 		Email      string    `json:"email"`
@@ -34,7 +42,14 @@ func (c *AlertController) Create(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(alert)
 }
 
-// Récupérer toutes les alertes (GET /alerts)
+// GetAll récupère toutes les alertes
+// @Summary Liste toutes les alertes
+// @Description Récupère toutes les alertes enregistrées
+// @Tags Alertes
+// @Accept json
+// @Produce json
+// @Failure 500 {string} string "Erreur lors de la récupération des alertes"
+// @Router /alerts [get]
 func (c *AlertController) GetAll(w http.ResponseWriter, r *http.Request) {
 	alerts, err := c.Service.GetAllAlerts()
 	if err != nil {
