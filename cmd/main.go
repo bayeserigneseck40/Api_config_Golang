@@ -19,7 +19,6 @@ func main() {
 	db, _ := helpers.InitDB()
 	defer db.Close()
 	// Définition du routeur
-	//router := mux.NewRouter()
 	// Initialisation des composants pour Resource
 	resourceRepo := &ripositories.ResourceRepository{DB: db}
 	resourceService := &services.ResourceService{Repo: resourceRepo}
@@ -39,8 +38,8 @@ func main() {
 	// Routes pour Alert
 	http.HandleFunc("/alerts", alertController.GetAll)
 	http.HandleFunc("/alerts/create", alertController.Create)
-	//http.HandleFunc("/alerts/{delete}", alertController.DeleteAlert)
-	//http.HandleFunc("/alerts/update", alertController.UpdateAlert)
+	http.HandleFunc("/alerts/{delete}", alertController.Delete)
+	http.HandleFunc("/alerts/update", alertController.Update)
 	log.Println("🚀 Serveur démarré sur http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

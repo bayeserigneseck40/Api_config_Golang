@@ -31,3 +31,21 @@ func (s *AlertService) CreateAlert(email string, resourceID uuid.UUID, oll strin
 func (s *AlertService) GetAllAlerts() ([]models.Alert, error) {
 	return s.Repo.GetAllAlerts()
 }
+
+// Suppression d'une Alert
+func (s *AlertService) DeleteAlert(id uuid.UUID) error {
+	return s.Repo.DeleteAlert(id)
+}
+
+// Mise à jour d'une ressource
+func (s *AlertService) UpdateAlert(id uuid.UUID, email string) error {
+	existing, err := s.Repo.GetByID(id)
+	if err != nil {
+		return err
+	}
+
+	existing.ID = id
+	existing.Email = email
+
+	return s.Repo.UpdateAlert(existing)
+}

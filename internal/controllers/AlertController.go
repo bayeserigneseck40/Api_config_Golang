@@ -59,3 +59,42 @@ func (c *AlertController) GetAll(w http.ResponseWriter, r *http.Request) {
 
 	json.NewEncoder(w).Encode(alerts)
 }
+
+func (c *AlertController) Delete(w http.ResponseWriter, r *http.Request) {
+	id, err := uuid.Parse(r.URL.Query().Get("id"))
+	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+
+	err = c.Service.DeleteAlert(id)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}
+func (c *AlertController) Update(w http.ResponseWriter, r *http.Request) {
+	id, err := uuid.Parse(r.URL.Query().Get("id"))
+	if err != nil {
+		http.Error(w, "Invalid ID", http.StatusBadRequest)
+		return
+	}
+
+	var req struct {
+		email string `json:"email"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid input", http.StatusBadRequest)
+		return
+	}
+
+	err = c.Service.UpdateAlert(id, req.email)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+}

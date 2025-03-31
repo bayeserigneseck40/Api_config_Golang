@@ -3,6 +3,7 @@ package ripositories
 import (
 	"bss.com/create_api_config/internal/models"
 	"database/sql"
+	"github.com/google/uuid"
 )
 
 type AlertRepository struct {
@@ -60,7 +61,20 @@ func (r *AlertRepository) UpdateAlert(alert *models.Alert) error {
 }
 
 // Supprimer un événement
-func (r *AlertRepository) DeleteAlert(id string) error {
+func (r *AlertRepository) DeleteAlert(id uuid.UUID) error {
 	_, err := r.DB.Exec("DELETE FROM alerts WHERE id = ?", id)
 	return err
+}
+
+// Récupère une Alert par son ID
+func (r *AlertRepository) GetByID(id uuid.UUID) (*models.Alert, error) {
+	query := "SELECT id, name, uca_id FROM alert WHERE id = ?"
+	row := r.DB.QueryRow(query, id)
+
+	alert := &models.Alert{}
+	err := row.Scan(&alert.ID, &alert.Email, &alert.Oll)
+	if err != nil {
+		return nil, err
+	}
+	return alert, nil
 }
