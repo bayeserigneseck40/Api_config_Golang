@@ -60,6 +60,17 @@ func (c *AlertController) GetAll(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(alerts)
 }
 
+// Delete supprime une alert
+// @Summary Supprime une alert
+// @Description Supprime une alert via son ID
+// @Tags Alerts
+// @Accept json
+// @Produce json
+// @Param id query string true "ID de la alert"
+// @Success 204 {string} string "alert deleted successfully"
+// @Failure 400 {string} string "Invalid ID"
+// @Failure 500 {string} string "Internal server error"
+// @Router /alerts/{id} [delete]
 func (c *AlertController) Delete(w http.ResponseWriter, r *http.Request) {
 	id, err := uuid.Parse(r.URL.Query().Get("id"))
 	if err != nil {
@@ -75,6 +86,18 @@ func (c *AlertController) Delete(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusNoContent)
 }
+
+// Update met à jour une alert existante
+// @Summary Met à jour une alert
+// @Description Met à jour une alert via son ID
+// @Tags alert
+// @Accept json
+// @Produce json
+// @Param id query string true "ID de la alert"
+// @Success 200 {string} string "Resource updated successfully"
+// @Failure 400 {string} string "Invalid input"
+// @Failure 500 {string} string "Internal server error"
+// @Router /alerts/{id} [put]
 func (c *AlertController) Update(w http.ResponseWriter, r *http.Request) {
 	id, err := uuid.Parse(r.URL.Query().Get("id"))
 	if err != nil {
